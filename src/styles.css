@@ -667,3 +667,143 @@
 .site-theme .site-rule {
   border-top: 1px solid hsl(var(--border));
 }
+
+/* ── Dashboard app theme ──
+   Mirrors the public site's clinical typography, teal accent, crisp borders,
+   and restrained depth while preserving dense, scannable workspace layouts. */
+.dashboard-theme {
+  --background: 180 25% 98%;
+  --foreground: 197 43% 8%;
+  --card: 0 0% 100%;
+  --card-foreground: 197 43% 8%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 197 43% 8%;
+  --primary: 172 74% 28%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 172 30% 94%;
+  --secondary-foreground: 197 43% 8%;
+  --muted: 180 20% 96%;
+  --muted-foreground: 197 12% 38%;
+  --accent: 172 60% 92%;
+  --accent-foreground: 197 43% 8%;
+  --border: 180 18% 86%;
+  --input: 180 18% 86%;
+  --ring: 172 74% 28%;
+  --app-canvas: 180 25% 97%;
+  --app-canvas-accent: 172 40% 95%;
+  --widget-border: 180 18% 86%;
+  --widget-shadow: 0 1px 2px hsl(197 43% 8% / 0.03), 0 8px 24px -20px hsl(197 43% 8% / 0.22);
+  --sidebar-background: 197 43% 6%;
+  --sidebar-foreground: 168 21% 94%;
+  --sidebar-primary: 172 84% 39%;
+  --sidebar-primary-foreground: 197 43% 6%;
+  --sidebar-accent: 186 51% 12%;
+  --sidebar-accent-foreground: 168 21% 94%;
+  --sidebar-border: 172 84% 39% / 0.18;
+  --sidebar-ring: 172 84% 39%;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: "DM Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dashboard-theme.dark {
+  --background: 197 43% 6%;
+  --foreground: 168 21% 94%;
+  --card: 186 51% 10%;
+  --card-foreground: 168 21% 94%;
+  --popover: 186 51% 10%;
+  --popover-foreground: 168 21% 94%;
+  --primary: 172 84% 39%;
+  --primary-foreground: 197 43% 6%;
+  --secondary: 186 40% 15%;
+  --secondary-foreground: 168 21% 94%;
+  --muted: 186 38% 13%;
+  --muted-foreground: 168 12% 68%;
+  --accent: 172 45% 16%;
+  --accent-foreground: 168 21% 94%;
+  --border: 172 28% 20%;
+  --input: 172 28% 20%;
+  --app-canvas: 197 43% 5%;
+  --app-canvas-accent: 186 45% 9%;
+  --widget-border: 172 24% 19%;
+  --widget-shadow: 0 1px 2px hsl(197 60% 2% / 0.25), 0 12px 28px -22px hsl(197 60% 2% / 0.8);
+}
+
+.dashboard-theme h1,
+.dashboard-theme h2,
+.dashboard-theme h3,
+.dashboard-theme h4,
+.dashboard-theme h5,
+.dashboard-theme h6 {
+  font-family: "Plus Jakarta Sans", "DM Sans", system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.dashboard-theme p,
+.dashboard-theme li,
+.dashboard-theme button,
+.dashboard-theme input,
+.dashboard-theme textarea,
+.dashboard-theme select,
+.dashboard-theme table {
+  font-family: "DM Sans", system-ui, sans-serif;
+  letter-spacing: 0;
+}
+
+.dashboard-theme.dashboard-bg {
+  background:
+    linear-gradient(180deg, hsl(var(--app-canvas)) 0%, hsl(var(--background)) 42%, hsl(var(--app-canvas)) 100%);
+}
+
+.dashboard-theme .dashboard-sidebar [data-sidebar="sidebar"] {
+  background: hsl(var(--sidebar-background));
+}
+
+.dashboard-theme .sing-widget,
+.dashboard-theme .glass-card {
+  border-color: hsl(var(--widget-border));
+  background: hsl(var(--card));
+  box-shadow: var(--widget-shadow);
+}
+
+.dashboard-theme .sing-widget::before,
+.dashboard-theme .sing-widget::after {
+  display: none;
+}
+
+.dashboard-theme .stat-card::after {
+  height: 2px;
+  background: hsl(var(--primary));
+}
+
+.dashboard-theme .card-hover:hover,
+.dashboard-theme .stat-card:hover {
+  transform: translateY(-2px);
+  border-color: hsl(var(--primary) / 0.28);
+  box-shadow: 0 12px 28px -22px hsl(var(--foreground) / 0.35);
+}
+
+.dashboard-theme :where(input, textarea, select) {
+  box-shadow: none;
+}
+
+.dashboard-theme :where(table thead) {
+  background: hsl(var(--muted) / 0.7);
+}
+
+.dashboard-theme :where([role="dialog"], [role="menu"]) {
+  border-color: hsl(var(--border));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-theme *,
+  .dashboard-theme *::before,
+  .dashboard-theme *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
