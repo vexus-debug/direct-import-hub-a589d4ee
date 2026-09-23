@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "./DashboardSidebar";
 import { DashboardHeader } from "./DashboardHeader";
@@ -21,10 +21,20 @@ const springTransition = {
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [aiOpen, setAiOpen] = useState(false);
+  const [appearance, setAppearance] = useState<"light" | "dark">(() => {
+    if (typeof window === "undefined") return "light";
+    const saved = window.localStorage.getItem("clinexus-dashboard-appearance");
+    if (saved === "light" || saved === "dark") return saved;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  });
   const isMobile = useIsMobile();
   const location = useLocation();
   const navType = useNavigationType();
   const isBack = navType === "POP";
+
+  useEffect(() => {
+    window.localStorage.setItem("clinexus-dashboard-appearance", appearance);
+  }, [appearance]);
 
   // Mobile Chrome shows composited-tile corruption (horizontal noise lines)
   // when large scrolling subtrees are transformed/scaled. Use a plain fade
@@ -43,10 +53,15 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <SidebarProvider>
-      <div className="flex h-dvh w-full overflow-hidden dashboard-bg">
+      <div className={`dashboard-theme ${appearance === "dark" ? "dark" : ""} flex h-dvh w-full overflow-hidden dashboard-bg`}>
         <DashboardSidebar />
         <div className="flex flex-1 flex-col h-full overflow-hidden">
-          <DashboardHeader onToggleAI={() => setAiOpen(!aiOpen)} aiOpen={aiOpen} />
+          <DashboardHeader
+            onToggleAI={() => setAiOpen(!aiOpen)}
+            aiOpen={aiOpen}
+            appearance={appearance}
+            onToggleAppearance={() => setAppearance((current) => current === "light" ? "dark" : "light")}
+          />
 
           {isMobile ? (
             <>
@@ -58,7 +73,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="flex-1 overflow-y-auto overscroll-contain p-4 scroll-momentum"
+                    className="flex-1 overflow-y-auto overscroll-contain px-4 py-5 scroll-momentum"
                   >
                     <AnimatePresence mode="wait">
                       <motion.div
@@ -140,7 +155,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             </>
           ) : (
             <>
-              <main className="flex-1 overflow-y-auto overscroll-contain p-4 lg:p-6 scroll-momentum">
+              <main className="flex-1 overflow-y-auto overscroll-contain px-5 py-6 lg:px-8 lg:py-7 scroll-momentum">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={location.pathname}

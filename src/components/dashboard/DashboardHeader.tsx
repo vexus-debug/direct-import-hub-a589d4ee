@@ -6,7 +6,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Bell, User, Settings, LogOut, ChevronDown, Command, ChevronRight, Search, Stethoscope, Menu } from "lucide-react";
+import { Bell, User, Settings, LogOut, ChevronDown, Command, ChevronRight, Search, Stethoscope, Menu, Moon, Sun } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useOrg } from "@/hooks/useOrg";
@@ -47,9 +47,11 @@ const breadcrumbLabels: Record<string, string> = {
 interface DashboardHeaderProps {
   onToggleAI?: () => void;
   aiOpen?: boolean;
+  appearance?: "light" | "dark";
+  onToggleAppearance?: () => void;
 }
 
-export function DashboardHeader({ onToggleAI, aiOpen }: DashboardHeaderProps = {}) {
+export function DashboardHeader({ onToggleAI, aiOpen, appearance = "light", onToggleAppearance }: DashboardHeaderProps = {}) {
   const { profile, user, signOut } = useAuth();
   const { basePath, currentOrg } = useOrg();
   const { toggleSidebar } = useSidebar();
@@ -70,19 +72,21 @@ export function DashboardHeader({ onToggleAI, aiOpen }: DashboardHeaderProps = {
   const isHome = currentPage === "Dashboard";
 
   return (
-    <header className="header-accent relative sticky top-0 z-40 flex h-14 items-center gap-4 border-b border-border bg-card px-4 lg:px-6 shadow-sm">
+    <header className="relative sticky top-0 z-40 flex h-16 items-center gap-3 border-b border-border bg-card/90 px-4 backdrop-blur-xl lg:px-8">
 
       {/* Desktop: icon-only */}
       <SidebarTrigger className="-ml-1 text-muted-foreground hover:text-foreground hidden md:flex" />
 
       {/* Mobile: prominent button with "Menu" label */}
-      <button
-        className="flex md:hidden items-center gap-1.5 -ml-1 px-2.5 py-1.5 rounded-lg bg-muted/70 hover:bg-muted border border-border/50 text-foreground transition-colors"
+      <Button
+        variant="outline"
+        size="sm"
+        className="flex md:hidden h-9 items-center gap-1.5 -ml-1 px-2.5 rounded-sm text-foreground"
         onClick={toggleSidebar}
       >
         <Menu className="h-4 w-4" />
         <span className="text-xs font-semibold">Menu</span>
-      </button>
+      </Button>
 
       {/* Breadcrumb */}
       <nav className="hidden md:flex items-center gap-1.5 text-sm min-w-0">
@@ -102,7 +106,7 @@ export function DashboardHeader({ onToggleAI, aiOpen }: DashboardHeaderProps = {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
         <Input
           placeholder="Search…"
-          className="pl-8 pr-14 h-8 text-sm bg-muted/50 border-border/60 focus-visible:bg-card focus-visible:ring-1 focus-visible:ring-primary/30 rounded-lg"
+          className="pl-8 pr-14 h-9 text-sm bg-muted/45 border-border focus-visible:bg-card focus-visible:ring-1 focus-visible:ring-primary/30 rounded-sm"
         />
         <kbd className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none inline-flex h-5 items-center gap-0.5 rounded border border-border/60 bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
           <Command className="h-2.5 w-2.5" />K
@@ -110,12 +114,24 @@ export function DashboardHeader({ onToggleAI, aiOpen }: DashboardHeaderProps = {
       </div>
 
       <div className="flex items-center gap-1">
+        {onToggleAppearance && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-9 w-9 rounded-sm text-muted-foreground hover:text-foreground"
+            onClick={onToggleAppearance}
+            title={appearance === "dark" ? "Use light appearance" : "Use dark appearance"}
+            aria-label={appearance === "dark" ? "Use light appearance" : "Use dark appearance"}
+          >
+            {appearance === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </Button>
+        )}
         {/* AI Toggle - hidden on mobile since mobile has bottom bar */}
         {onToggleAI && (
           <Button
             variant={aiOpen ? "default" : "ghost"}
             size="icon"
-            className={`hidden md:flex h-8 w-8 rounded-lg transition-all ${aiOpen ? "" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"}`}
+            className={`hidden md:flex h-9 w-9 rounded-sm transition-all ${aiOpen ? "" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"}`}
             onClick={onToggleAI}
             title="AI Assistant"
           >
@@ -124,7 +140,7 @@ export function DashboardHeader({ onToggleAI, aiOpen }: DashboardHeaderProps = {
         )}
 
         {/* Notification Bell */}
-        <Button variant="ghost" size="icon" className="relative h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-muted/50" asChild>
+        <Button variant="ghost" size="icon" className="relative h-9 w-9 rounded-sm text-muted-foreground hover:text-foreground hover:bg-muted/50" asChild>
           <Link to={`${basePath}/notifications`}>
             <Bell className="h-4 w-4" />
             {unreadCount > 0 && (
@@ -147,7 +163,7 @@ export function DashboardHeader({ onToggleAI, aiOpen }: DashboardHeaderProps = {
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              className="flex items-center gap-2 px-2 h-8 hover:bg-muted/50 rounded-lg"
+              className="flex items-center gap-2 px-2 h-9 hover:bg-muted/50 rounded-sm"
             >
               <Avatar className="h-6 w-6 ring-2 ring-border">
                 <AvatarImage src={profile?.avatar_url || ""} />

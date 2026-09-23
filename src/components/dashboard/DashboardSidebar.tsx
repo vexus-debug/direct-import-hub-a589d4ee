@@ -66,7 +66,7 @@ export function DashboardSidebar() {
       <button
         type="button"
         onClick={() => setMaintenanceOpen(true)}
-        className="relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm w-full text-left text-sidebar-foreground/40 border-l-[3px] border-transparent pl-[calc(0.75rem-3px)] hover:bg-white/5 cursor-not-allowed"
+          className="relative flex items-center gap-3 rounded-sm px-3 py-2 text-sm w-full text-left text-sidebar-foreground/40 border-l-2 border-transparent pl-[calc(0.75rem-2px)] hover:bg-sidebar-accent cursor-not-allowed"
       >
         <item.icon className="h-4 w-4 shrink-0 text-sidebar-foreground/30" />
         {!collapsed && <span className="truncate">{item.title}</span>}
@@ -76,17 +76,17 @@ export function DashboardSidebar() {
       <NavLink
         to={fullUrl}
         className={cn(
-          "relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all duration-200 group w-full",
+          "relative flex items-center gap-3 rounded-sm px-3 py-2 text-sm transition-all duration-200 group w-full",
           active
-            ? "bg-sidebar-primary/15 text-sidebar-primary font-medium border-l-[3px] border-sidebar-primary pl-[calc(0.75rem-3px)]"
-            : "text-sidebar-foreground/70 hover:bg-white/8 hover:text-sidebar-foreground border-l-[3px] border-transparent pl-[calc(0.75rem-3px)]"
+            ? "bg-sidebar-primary/12 text-sidebar-primary font-medium border-l-2 border-sidebar-primary pl-[calc(0.75rem-2px)]"
+            : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground border-l-2 border-transparent pl-[calc(0.75rem-2px)]"
         )}
         activeClassName=""
       >
         {active && (
           <motion.div
             layoutId="sidebar-active-bg"
-            className="absolute inset-0 rounded-lg bg-sidebar-primary/10"
+            className="absolute inset-0 rounded-sm bg-sidebar-primary/10"
             transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
           />
         )}
@@ -152,13 +152,10 @@ export function DashboardSidebar() {
     </AlertDialog>
     <Sidebar
       collapsible="icon"
-      className="border-r-0 transition-all duration-300"
-      style={{
-        background: `linear-gradient(180deg, hsl(var(--sidebar-grad-top)) 0%, hsl(var(--sidebar-grad-bottom)) 100%)`,
-      }}
+      className="dashboard-sidebar border-r border-sidebar-border transition-all duration-300"
     >
       {/* ── Logo / Clinic Name ── */}
-      <div className="flex items-center gap-3 px-4 py-[1.125rem] border-b border-white/8">
+      <div className="flex h-16 items-center gap-3 px-4 border-b border-sidebar-border">
         <div className="relative shrink-0">
           <img
             src={clinexusLogoRect}
@@ -175,7 +172,7 @@ export function DashboardSidebar() {
               transition={{ duration: 0.2 }}
               className="flex flex-col overflow-hidden"
             >
-              <span className="text-[13px] font-bold text-white truncate leading-tight">
+              <span className="text-[13px] font-bold text-sidebar-foreground truncate leading-tight">
                 {currentOrg?.org_name || "Clinexus"}
               </span>
               <span className="text-[10px] text-sidebar-foreground/50 font-medium capitalize tracking-wide">
@@ -195,9 +192,9 @@ export function DashboardSidebar() {
             <SidebarGroup key={group.label} className="mb-1">
               {!collapsed && (
                 <SidebarGroupLabel className="text-[9px] uppercase tracking-[0.18em] text-sidebar-foreground/35 font-semibold px-2 mb-1 flex items-center gap-2">
-                  <span className="h-px flex-1 bg-white/8" />
+                   <span className="h-px flex-1 bg-sidebar-border" />
                   {group.label}
-                  <span className="h-px flex-1 bg-white/8" />
+                   <span className="h-px flex-1 bg-sidebar-border" />
                 </SidebarGroupLabel>
               )}
               <SidebarGroupContent>
@@ -217,9 +214,9 @@ export function DashboardSidebar() {
         <SidebarGroup className="mt-1">
           {!collapsed && (
             <SidebarGroupLabel className="text-[9px] uppercase tracking-[0.18em] text-sidebar-foreground/35 font-semibold px-2 mb-1 flex items-center gap-2">
-              <span className="h-px flex-1 bg-white/8" />
+               <span className="h-px flex-1 bg-sidebar-border" />
               General
-              <span className="h-px flex-1 bg-white/8" />
+               <span className="h-px flex-1 bg-sidebar-border" />
             </SidebarGroupLabel>
           )}
           <SidebarGroupContent>
@@ -235,7 +232,7 @@ export function DashboardSidebar() {
       </SidebarContent>
 
       {/* ── User Footer ── */}
-      <SidebarFooter className="border-t border-white/8 p-3">
+      <SidebarFooter className="border-t border-sidebar-border p-3">
         <div className={cn("flex items-center gap-2.5", collapsed && "justify-center")}>
           <button
             onClick={() => navigate(`${basePath}/profile`)}
@@ -263,7 +260,7 @@ export function DashboardSidebar() {
                   onClick={() => navigate(`${basePath}/profile`)}
                   className="flex flex-col overflow-hidden flex-1 text-left hover:opacity-80 transition-opacity"
                 >
-                  <span className="text-[13px] font-semibold truncate text-white leading-tight">{displayName}</span>
+                   <span className="text-[13px] font-semibold truncate text-sidebar-foreground leading-tight">{displayName}</span>
                   <span className="text-[10px] text-sidebar-primary font-medium capitalize mt-0.5">
                     {getRoleLabel(orgRole)}
                   </span>
