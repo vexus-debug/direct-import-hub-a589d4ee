@@ -21,16 +21,20 @@ const springTransition = {
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [aiOpen, setAiOpen] = useState(false);
-  const [appearance, setAppearance] = useState<"light" | "dark">(() => {
-    if (typeof window === "undefined") return "light";
-    const saved = window.localStorage.getItem("clinexus-dashboard-appearance");
-    if (saved === "light" || saved === "dark") return saved;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  });
+  const [appearance, setAppearance] = useState<"light" | "dark">("light");
   const isMobile = useIsMobile();
   const location = useLocation();
   const navType = useNavigationType();
   const isBack = navType === "POP";
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem("clinexus-dashboard-appearance");
+    if (saved === "light" || saved === "dark") {
+      setAppearance(saved);
+      return;
+    }
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) setAppearance("dark");
+  }, []);
 
   useEffect(() => {
     window.localStorage.setItem("clinexus-dashboard-appearance", appearance);
